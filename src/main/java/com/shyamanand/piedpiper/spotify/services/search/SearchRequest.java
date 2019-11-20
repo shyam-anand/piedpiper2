@@ -5,24 +5,37 @@ import com.shyamanand.piedpiper.spotify.model.ObjectType;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class SearchRequest extends SpotifyRequest {
+  private static final String ENDPOINT = "/search?q={q}&type={type}&limit={limit}";
   private ObjectType type;
   private String query;
+  private int limit;
+
+  public SearchRequest() {
+    super(ENDPOINT);
+  }
 
   @Override
   public Map<String, Object> getQueryParams() {
     Map<String, Object> queryParams = new HashMap<>();
     queryParams.put("q", query);
-    queryParams.put("type", type);
+    queryParams.put("type", type.getType());
+    queryParams.put("limit", limit);
 
-    // ToDo -- limit and offset
+    // ToDo -- offset
 
     return queryParams;
+  }
+
+  public void setLimit(int limit) {
+    this.limit = limit;
+  }
+
+  public int getLimit() {
+    return limit;
   }
 }

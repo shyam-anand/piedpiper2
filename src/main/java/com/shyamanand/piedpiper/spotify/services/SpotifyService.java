@@ -6,9 +6,8 @@ import com.shyamanand.piedpiper.spotify.client.SpotifyRequest;
 /**
  *
  * @param <T> Implementation of {@link SpotifyRequest} class
- * @param <R> Type for Result
  */
-public abstract class SpotifyService<T extends SpotifyRequest, R> {
+public abstract class SpotifyService<T extends SpotifyRequest> {
 
   private final SpotifyClient spotifyClient;
 
@@ -20,5 +19,7 @@ public abstract class SpotifyService<T extends SpotifyRequest, R> {
     return spotifyClient;
   }
 
-  public abstract R get(T request);
+  public <R> R get(T request, Class<R> resultType) {
+    return spotifyClient.get(request, resultType);
+  }
 }
