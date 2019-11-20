@@ -1,14 +1,17 @@
 package com.shyamanand.piedpiper.spotify.services.search;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shyamanand.piedpiper.spotify.client.SpotifyClient;
 import com.shyamanand.piedpiper.spotify.model.ObjectType;
 import com.shyamanand.piedpiper.spotify.services.SpotifyService;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SearchService extends SpotifyService<SearchRequest> {
+public class SearchService extends SpotifyService {
 
   @Autowired
   protected SearchService(SpotifyClient spotifyClient) {
@@ -20,7 +23,8 @@ public class SearchService extends SpotifyService<SearchRequest> {
     searchRequest.setQuery(trackName);
     searchRequest.setType(ObjectType.TRACK);
     searchRequest.setLimit(1);
-    Map<String, SearchResult> searchResult = (Map<String, SearchResult>) get(searchRequest, Map.class);
-    return searchResult.get("tracks");
+    return Optional.ofNullable(get(searchRequest, JsonNode.class))
+        .map(responseJson -> new ObjectMapper().convertValue(responseJson.get("tracks"), SearchResult.class))
+        .orElse(null);
   }
 }

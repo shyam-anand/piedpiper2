@@ -12,7 +12,7 @@ public class SpotifyConfig {
   @Bean
   public RestTemplate restTemplate() {
     RestTemplate restTemplate = new RestTemplate();
-    restTemplate.setInterceptors(Arrays.asList(new LoggingInterceptor()));
+//    restTemplate.setInterceptors(Arrays.asList(new LoggingInterceptor()));
     return restTemplate;
   }
 }

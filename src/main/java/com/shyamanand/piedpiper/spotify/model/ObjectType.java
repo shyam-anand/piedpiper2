@@ -1,7 +1,15 @@
 package com.shyamanand.piedpiper.spotify.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum ObjectType {
-  ALBUM("album"), TRACK("track");
+
+  @JsonProperty("album")
+  ALBUM("album"),
+  @JsonProperty("track")
+  TRACK("track"),
+  @JsonProperty("artist")
+  ARTIST("artist");
 
   private final String type;
 

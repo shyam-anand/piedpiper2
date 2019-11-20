@@ -2,6 +2,7 @@ package com.shyamanand.piedpiper.spotify.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,14 @@ public class Album extends SpotifyObject {
 
   @JsonProperty("album_group")
   private AlbumGroup albumGroup;
-  @JsonProperty("album_type")
+
   private AlbumType albumType;
   private Collection<Artist> artists;
+
+  @JsonSetter
+  @JsonProperty("album_type")
+  public void setAlbumType(String type) {
+    this.albumType = AlbumType.fromString(type);
+  }
 
 }

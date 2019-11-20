@@ -20,7 +20,7 @@ public class SpotifyClient {
 
   // ToDo Write to DB / Create auth service
   private static final String TOKEN =
-      "BQCNcpfmaM2by1AJL8h-6Fozu_YUeWFaVIUtsXpeGiz0uhnF4vyjQ2dBMZnwUKsDFnFFRgfeNwhv0PwAnILvAT4GNfd7Hp0tz8eED0ZC1MmoxQr_eXeY0ixfMu8pfCv0g5zikO-elhDg";
+      "BQD3Z4CzdBjXOlRzj6tH1dCkN9VDUw2fTa915HXN2GrmKSS6n6KtO26Oavgsw1MaPuaHgDlCEtxWcalt9p_OnG9_EMsUawedUZZcjIEGO8LEoybdA3NnKs4cnwe66xR0l4WEPAvL2fDp";
 
   //  ToDo Move to properties file
   private static final String API_URL = "https://api.spotify.com/v1";
@@ -39,9 +39,10 @@ public class SpotifyClient {
         restTemplate.exchange(
             url, HttpMethod.GET, requestEntity(), responseType, uriVars);
 
+    log.info("Response: {}", responseEntity.getStatusCode());
     if (responseEntity.getStatusCode().is2xxSuccessful()) {
       if (responseEntity.getBody() == null) {
-        log.error("Response body is null");
+        log.info("Response body is null");
       } else {
         log.info("Response body type = {}", responseEntity.getBody().getClass());
       }
