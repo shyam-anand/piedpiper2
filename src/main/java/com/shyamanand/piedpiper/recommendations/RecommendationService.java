@@ -11,7 +11,10 @@ import com.shyamanand.piedpiper.spotify.services.search.SearchService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class RecommendationService {
     SearchResult searchResult = searchService.searchForTrack(trackName);
     if (searchResult.getItems().isEmpty()) {
       log.info("No search results for {}", trackName);
-      return Collections.emptyList();
+      return Collections.emptySet();
     }
 
     ArrayList<Track> tracks = new ArrayList<>(searchResult.getItems());
@@ -48,7 +51,7 @@ public class RecommendationService {
   }
 
   public Collection<String> recommendations(Track track) {
-    Collection<String> similarTracks = new ArrayList<>();
+    Map<String, Float> similarTracks = new HashMap<>();
     AudioFeature audioFeature = audioFeaturesService.audioFeature(track.getId());
     track.getArtists().stream()
         .findFirst()
@@ -67,20 +70,25 @@ public class RecommendationService {
             trackAudioFeatureMap -> {
               trackAudioFeatureMap.forEach(
                   (trackName, tAudioFeature) -> {
-                    if (isSimilar(tAudioFeature, audioFeature)) {
-                      similarTracks.add(trackName);
+                    float similarity = similarity(tAudioFeature, audioFeature);
+                    if (similarity <= .1) {
+                      similarTracks.put(trackName, similarity);
                     }
                   });
             });
-    return similarTracks;
+    Set<String> recos = new TreeSet<>((o1, o2) -> {
+      float d = similarTracks.get(o1) - similarTracks.get(o2);
+      return d == 0 ? 0 : (d >= 1.0) ? 1 : -1;
+    });
+    recos.addAll(similarTracks.keySet());
+    return recos;
   }
 
   //ToDo Compare more audio features
-  private boolean isSimilar(AudioFeature tAudioFeature, AudioFeature audioFeature) {
-    float valence =
+  private float similarity(AudioFeature tAudioFeature, AudioFeature audioFeature) {
+    return
         audioFeature.getValence() > tAudioFeature.getValence()
             ? audioFeature.getValence() - tAudioFeature.getValence()
             : tAudioFeature.getValence() - audioFeature.getValence();
-    return (valence < .1);
   }
 }

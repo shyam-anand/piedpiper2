@@ -20,7 +20,7 @@ public class SpotifyClient {
 
   // ToDo Write to DB / Create auth service
   private static final String TOKEN =
-      "BQD3Z4CzdBjXOlRzj6tH1dCkN9VDUw2fTa915HXN2GrmKSS6n6KtO26Oavgsw1MaPuaHgDlCEtxWcalt9p_OnG9_EMsUawedUZZcjIEGO8LEoybdA3NnKs4cnwe66xR0l4WEPAvL2fDp";
+      "BQAhoEKvvBL6V91sKZF6RdFiMdo0JHNMT4e2LwgGJZOiSph-DWu35K-wQuw5pCpqneobIx66uD5UFpcbfZgcDPPdIQUFFMkX1kNe2LkTTv2Hmiml_yXArd-vuD4M6hzrR5Ey5JJYl0vr";
 
   //  ToDo Move to properties file
   private static final String API_URL = "https://api.spotify.com/v1";
