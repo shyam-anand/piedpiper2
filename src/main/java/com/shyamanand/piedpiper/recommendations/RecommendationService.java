@@ -75,6 +75,7 @@ public class RecommendationService {
     return similarTracks;
   }
 
+  //ToDo Compare more audio features
   private boolean isSimilar(AudioFeature tAudioFeature, AudioFeature audioFeature) {
     float valence =
         audioFeature.getValence() > tAudioFeature.getValence()
